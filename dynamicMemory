@@ -1,0 +1,66 @@
+/* Sample code for dynamic memory allocation*/
+
+#include <stdlib.h>
+#include <stdio.h>
+
+
+
+void sort(int *arr, int size){ //bubble sort
+    int i,j,tmp;
+    for(i=0;i<size-1;i++){
+        for(j=0;j<size-i-1;j++){
+            if(arr[j] > arr[j+1]){
+                tmp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=tmp;
+            }
+        }
+    }
+}
+
+int main(){
+    int *ptr;  // pointer to store the address of the dynamically allocated memory block
+    int size,i,prev_size=0;
+    char ans;
+    printf("How many integers you want to sort:"); 
+    scanf("%d",&size);
+
+    ptr=(int*) malloc(size*sizeof(int));
+
+    if(ptr==NULL){
+        printf("Error: memory could not be allocated");
+        exit(1);
+    } 
+    else{
+        while(1){
+            printf("Enter %d integers: ", size);
+            for (i=0;i<size;i++){
+                scanf("%d",&ptr[prev_size+i]);
+            }
+            prev_size+=size;
+            printf("Would you like to enter more integers? (y/n): ");
+            scanf(" %c",&ans);
+            if(ans=='n'|| ans=='N'){
+                break;
+            }
+            else if(ans=='y'){
+                printf("How many additional integers you want to add:");
+                scanf("%d",&size);
+                ptr=(int*) realloc(ptr,(prev_size+size)*sizeof(int));
+                if(ptr==NULL){
+                    printf("Error: memory could not be allocated");
+                    exit(1);
+                } 
+            }
+
+        }
+        sort(ptr,prev_size);
+        printf("Sorted array is:\n");
+        for(i=0;i<prev_size;i++){
+            printf("%d ",ptr[i]);
+        }
+        printf("\n");   
+    }
+    free(ptr);
+    return 0;
+}
