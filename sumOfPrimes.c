@@ -1,3 +1,5 @@
+//computes sum of primes between 1 and n
+
 #include<stdio.h>
 #include<math.h>
 
